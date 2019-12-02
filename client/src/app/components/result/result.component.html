@@ -1,0 +1,75 @@
+<!-- singleplayer -->
+<mat-card *ngIf="single" class="mat-elevation-z6">
+	<mat-card-header>
+		<mat-card-title>Konačan rezultat</mat-card-title>
+	</mat-card-header>
+
+	<div class="middle">
+		<p>Datum igre: <strong>{{ date | date }}</strong></p>
+	</div>
+
+	<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+		<ng-container matColumnDef="game">
+			<th mat-header-cell *matHeaderCellDef>Igra</th>
+			<td mat-cell *matCellDef="let record">{{ record.game }}</td>
+			<td mat-footer-cell *matFooterCellDef>Ukupno</td>
+		</ng-container>
+
+		<ng-container matColumnDef="points">
+			<th mat-header-cell *matHeaderCellDef>Poeni</th>
+			<td mat-cell *matCellDef="let record">{{ record.points }}</td>
+			<td mat-footer-cell *matFooterCellDef>{{ total }}</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+		<tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+
+	</table>
+
+	<div class="middle">
+		<button mat-raised-button type="button" color="warn" (click)="goBack()">Početna strana</button>
+	</div>
+</mat-card>
+
+<!-- multiplayer -->
+<mat-card *ngIf="!single" class="mat-elevation-z6">
+	<mat-card-header>
+		<mat-card-title>Konačan rezultat</mat-card-title>
+	</mat-card-header>
+
+	<div class="middle">
+		<p>Datum igre: <strong>{{ date | date }}</strong></p>
+	</div>
+
+	<table mat-table [dataSource]="matchSource" class="multi mat-elevation-z8">
+
+		<ng-container matColumnDef="bluePoints">
+			<th mat-header-cell *matHeaderCellDef>{{ bluePlayer }}</th>
+			<td mat-cell *matCellDef="let record">{{ record.bluePoints }}</td>
+			<td mat-footer-cell *matFooterCellDef>{{ totalBlue }}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="game">
+			<th mat-header-cell *matHeaderCellDef>Igra</th>
+			<td mat-cell *matCellDef="let record">{{ record.game }}</td>
+			<td mat-footer-cell *matFooterCellDef>Ukupno</td>
+		</ng-container>
+
+		<ng-container matColumnDef="redPoints">
+			<th mat-header-cell *matHeaderCellDef>{{ redPlayer }}</th>
+			<td mat-cell *matCellDef="let record">{{ record.redPoints }}</td>
+			<td mat-footer-cell *matFooterCellDef>{{ totalRed }}</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedMatchColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedMatchColumns"></tr>
+		<tr mat-footer-row *matFooterRowDef="displayedMatchColumns"></tr>
+
+	</table>
+
+	<div class="middle">
+		<button mat-raised-button type="button" color="warn" (click)="goBack()">Početna strana</button>
+	</div>
+</mat-card>

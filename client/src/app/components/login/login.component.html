@@ -1,0 +1,42 @@
+<mat-card class="mat-elevation-z6">
+	<mat-card-header>
+		<mat-card-title>Prijavljivanje</mat-card-title>
+	</mat-card-header>
+
+	<form class="container" [formGroup]="loginForm" (ngSubmit)="login()">
+		<mat-form-field appearance="outline">
+			<mat-label>Korisničko ime</mat-label>
+			<input matInput type="text" formControlName="username" [errorStateMatcher]="matcher" required>
+			<mat-error>{{ errorMessage('username') }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Lozinka</mat-label>
+			<input matInput [type]="hide ? 'password' : 'text'" formControlName="password" [errorStateMatcher]="matcher"
+				[required]="!toggle.checked">
+			<button mat-icon-button type="button" matSuffix (click)="hide = !hide">
+				<mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+			</button>
+			<mat-error>{{ errorMessage('password') }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field *ngIf="toggle.checked" appearance="outline">
+			<mat-label>JMBG</mat-label>
+			<input matInput type="text" formControlName="jmbg" [errorStateMatcher]="matcher" minlength="13"
+				maxlength="13" [required]="toggle.checked">
+			<mat-error>{{ errorMessage('jmbg') }}</mat-error>
+		</mat-form-field>
+
+		<mat-slide-toggle #toggle formControlName="toggle" (change)="updateValidators()">
+			Zaboravio/la sam lozinku
+		</mat-slide-toggle>
+
+		<div class="middle">
+			<button mat-raised-button type="button" color="accent" (click)="passwordChange()"
+				[disabled]="!loginForm.valid || !toggle.checked">Promena lozinke</button>
+			<button mat-raised-button type="submit" color="accent"
+				[disabled]="!loginForm.valid || toggle.checked">Prijava</button>
+			<a mat-raised-button type="button" color="accent" routerLink="../ranks">Nastavi kao gost</a>
+		</div>
+	</form>
+</mat-card>

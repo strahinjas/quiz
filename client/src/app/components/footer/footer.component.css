@@ -1,0 +1,13 @@
+footer {
+	width: 100%;
+	background-color: #b71c1c;
+	color: white;
+}
+
+footer div {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	vertical-align: middle;
+	padding: 10px;
+}

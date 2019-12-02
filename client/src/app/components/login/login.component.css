@@ -1,0 +1,31 @@
+mat-card {
+	margin: 5% auto;
+	width: 50%;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+}
+
+mat-slide-toggle {
+	margin: 0px auto;
+	margin-bottom: 21.5px;
+}
+
+.middle {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+@media only screen and (max-width: 720px) {
+	.middle {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.middle button {
+		margin-bottom: 0.5em;
+	}
+}

@@ -1,0 +1,161 @@
+<div *ngIf="waiting" class="waiting">
+	<mat-spinner></mat-spinner>
+	<p>Molimo sačekajte crvenog takmičara...</p>
+	<button mat-flat-button type="button" color="warn" (click)="cancel()">Odustani</button>
+</div>
+
+<div class="container">
+	<table>
+		<tr>
+			<td colspan="2" class="welcome">
+				<mat-card class="welcome-card mat-elevation-z6">
+					<h1 class="mat-h1">Dobrodošli, {{ player?.name }}</h1>
+				</mat-card>
+			</td>
+		</tr>
+		<tr>
+			<td class="user-data">
+				<mat-card class="mat-elevation-z6">
+					<div class="header">
+						<h2 class="mat-h2">Vaše informacije</h2>
+						<img *ngIf="player?.picture" mat-card-avatar src="{{ player?.picture }}" alt="Profilna slika">
+					</div>
+					<mat-card-content>
+						<table>
+							<tr>
+								<th>Ime:</th>
+								<th>{{ player?.name }}</th>
+							</tr>
+							<tr>
+								<th>Prezime:</th>
+								<th>{{ player?.surname }}</th>
+							</tr>
+							<tr>
+								<th>Pol:</th>
+								<th>{{ player?.gender === 'male' ? 'Muški' : 'Ženski' }}</th>
+							</tr>
+							<tr>
+								<th>Zanimanje:</th>
+								<th>{{ player?.profession ? player?.profession : 'Nepoznato' }}</th>
+							</tr>
+							<tr>
+								<th>Email:</th>
+								<th>{{ player?.email }}</th>
+							</tr>
+							<tr>
+								<th>Korisničko ime:</th>
+								<th>{{ player?.username }}</th>
+							</tr>
+							<tr>
+								<th>JMBG:</th>
+								<th>{{ player?.jmbg }}</th>
+							</tr>
+						</table>
+					</mat-card-content>
+				</mat-card>
+			</td>
+			<td rowspan="2" class="day-rank">
+				<mat-card class="mat-elevation-z6">
+					<h2 class="mat-h2">Rang lista tekućeg dana</h2>
+					<table mat-table *ngIf="ranks.length > 0; else noRanks" [dataSource]="ranks"
+						class="mat-elevation-z8">
+
+						<ng-container matColumnDef="position">
+							<th mat-header-cell *matHeaderCellDef>Mesto</th>
+							<td mat-cell *matCellDef="let index = index">{{ index + 1 }}</td>
+						</ng-container>
+
+						<ng-container matColumnDef="player">
+							<th mat-header-cell *matHeaderCellDef>Takmičar</th>
+							<td mat-cell *matCellDef="let row">{{ row.player }}</td>
+						</ng-container>
+
+						<ng-container matColumnDef="points">
+							<th mat-header-cell *matHeaderCellDef>Poeni</th>
+							<td mat-cell *matCellDef="let row">{{ row.points }}</td>
+						</ng-container>
+
+						<tr mat-header-row *matHeaderRowDef="ranksColumns"></tr>
+						<tr mat-row *matRowDef="let row; columns: ranksColumns" class="table-row"
+							[class.me]="row && row.player === player.username"></tr>
+
+					</table>
+
+					<ng-template #noRanks>
+						<p>Trenutno nema podataka u bazi.</p>
+						<button mat-button color="primary" (click)="loadRanks()">Osveži</button>
+					</ng-template>
+
+					<h2 class="space mat-h2">Prethodne partije</h2>
+					<table mat-table *ngIf="matches.length > 0; else noMatches" [dataSource]="matches"
+						class="mat-elevation-z8">
+
+						<ng-container matColumnDef="date">
+							<th mat-header-cell *matHeaderCellDef>Datum</th>
+							<td mat-cell *matCellDef="let row">{{ row.date | date }}</td>
+						</ng-container>
+
+						<ng-container matColumnDef="blue">
+							<th mat-header-cell *matHeaderCellDef>Plavi takmičar</th>
+							<td mat-cell *matCellDef="let row">{{ row.blue }}</td>
+						</ng-container>
+
+						<ng-container matColumnDef="blue-points">
+							<th mat-header-cell *matHeaderCellDef>Poeni</th>
+							<td mat-cell *matCellDef="let row">{{ row.bluePoints }}</td>
+						</ng-container>
+
+						<ng-container matColumnDef="red">
+							<th mat-header-cell *matHeaderCellDef>Crveni takmičar</th>
+							<td mat-cell *matCellDef="let row">{{ row.red }}</td>
+						</ng-container>
+
+						<ng-container matColumnDef="red-points">
+							<th mat-header-cell *matHeaderCellDef>Poeni</th>
+							<td mat-cell *matCellDef="let row">{{ row.redPoints }}</td>
+						</ng-container>
+
+						<ng-container matColumnDef="outcome">
+							<th mat-header-cell *matHeaderCellDef>Ishod</th>
+							<td mat-cell *matCellDef="let row">
+								{{ row.outcome === 'blue' ? 'Pobedio plavi' : row.outcome === 'red' ? 'Pobedio crveni' : 'Nerešeno' }}
+							</td>
+						</ng-container>
+
+						<tr mat-header-row *matHeaderRowDef="matchesColumns"></tr>
+						<tr mat-row *matRowDef="let row; columns: matchesColumns" class="table-row"
+							[class.me]="(row.blue === player.username && row.outcome === 'blue') || (row.red === player.username && row.outcome === 'red')">
+						</tr>
+
+					</table>
+
+					<ng-template #noMatches>
+						<p>Trenutno nema podataka u bazi.</p>
+						<button mat-button color="warn" (click)="loadMatches()">Osveži</button>
+					</ng-template>
+				</mat-card>
+			</td>
+		</tr>
+		<tr>
+			<td class="options">
+				<mat-card class="mat-elevation-z6">
+					<h2 class="mat-h2">Izaberite način igre</h2>
+					<button mat-raised-button matTooltip="Biću plavi takmičar" color="warn" (click)="create()">
+						Kreiraj novu partiju
+					</button>
+
+					<button mat-raised-button matTooltip="Biću crveni takmičar" color="primary" (click)="join()"
+						[disabled]="available === 0">
+						Pridruži se već kreiranoj partiji
+					</button>
+
+					<p>Broj otvorenih partija: {{ available }}</p>
+
+					<button mat-raised-button color="accent" (click)="todayGame()">
+						Igraj igru dana
+					</button>
+				</mat-card>
+			</td>
+		</tr>
+	</table>
+</div>

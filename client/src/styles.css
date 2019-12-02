@@ -1,0 +1,20 @@
+html, body {
+	min-height: 100%;
+}
+body {
+	margin: 0;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+	font-size: 14px;
+	background-image: url(./assets/images/background.png);
+}
+
+.snack-bar {
+	color: white;
+	background-color: #3949ab;
+	width: min-content;
+}
+
+.snack-bar span {
+	margin: auto;
+	text-align: center;
+}

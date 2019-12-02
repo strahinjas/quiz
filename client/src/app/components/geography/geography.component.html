@@ -1,0 +1,68 @@
+<mat-card class="mat-elevation-z6">
+	<mat-card-header>
+		<mat-card-title>Zanimljiva geografija</mat-card-title>
+	</mat-card-header>
+
+	<form class="container" [formGroup]="geoForm" (ngSubmit)="checkTerms()">
+		<div class="letter">
+			<span>Na slovo, na slovo: <strong>{{ letter }}</strong></span>
+			<button mat-raised-button type="button" color="warn" (click)="stopLoop()"
+				[disabled]="stopped || spectator">STOP</button>
+		</div>
+
+		<p *ngIf="spectator" class="message">PROTIVNIK JE NA POTEZU</p>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Država</mat-label>
+			<input matInput type="text" formControlName="country" [errorStateMatcher]="matcher">
+			<mat-error>Pojam mora počinjati zadatim slovom!</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Grad</mat-label>
+			<input matInput type="text" formControlName="city" [errorStateMatcher]="matcher">
+			<mat-error>Pojam mora počinjati zadatim slovom!</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Jezero</mat-label>
+			<input matInput type="text" formControlName="lake" [errorStateMatcher]="matcher">
+			<mat-error>Pojam mora počinjati zadatim slovom!</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Planina</mat-label>
+			<input matInput type="text" formControlName="mountain" [errorStateMatcher]="matcher">
+			<mat-error>Pojam mora počinjati zadatim slovom!</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Reka</mat-label>
+			<input matInput type="text" formControlName="river" [errorStateMatcher]="matcher">
+			<mat-error>Pojam mora počinjati zadatim slovom!</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Životinja</mat-label>
+			<input matInput type="text" formControlName="animal" [errorStateMatcher]="matcher">
+			<mat-error>Pojam mora počinjati zadatim slovom!</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Biljka</mat-label>
+			<input matInput type="text" formControlName="plant" [errorStateMatcher]="matcher">
+			<mat-error>Pojam mora počinjati zadatim slovom!</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Muzička grupa</mat-label>
+			<input matInput type="text" formControlName="band" [errorStateMatcher]="matcher">
+			<mat-error>Pojam mora počinjati zadatim slovom!</mat-error>
+		</mat-form-field>
+
+		<div class="middle">
+			<p>Preostalo vremena: <strong>{{ timeLeft }}s</strong></p>
+			<button mat-raised-button type="submit" color="warn" [disabled]="!stopped || spectator">Potvrdi</button>
+		</div>
+	</form>
+</mat-card>

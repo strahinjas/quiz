@@ -1,0 +1,42 @@
+<mat-card class="mat-elevation-z6">
+	<mat-card-header>
+		<mat-card-title>Pehar</mat-card-title>
+	</mat-card-header>
+
+	<form class="container" [formGroup]="gobletForm" (ngSubmit)="checkAnswer(gobletForm.value.answer)">
+		<table>
+			<tr>
+				<td class="goblet">
+					<div *ngFor="let row of rows">
+						<span *ngFor="let letter of row">
+							<input type="text" class="square-input mat-elevation-z3" [class.blue]="letter.blue"
+								[class.red]="letter.red" [class.missed]="letter.missed"
+								value="{{ letter.blue || letter.red || letter.missed ? letter.letter : '_' }}" disabled>
+						</span>
+					</div>
+				</td>
+				<td class="question">
+					<div class="right">
+						<div class="middle">
+							<p>Preostalo vremena: {{ timeLeft }}s</p>
+						</div>
+
+						<p>Pitanje #{{ question + 1 }}: {{ goblets[round]?.rows[question].question }}</p>
+
+						<mat-form-field appearance="outline" hideRequiredMarker>
+							<mat-label>Odgovor #{{ question + 1 }}</mat-label>
+							<input matInput type="text" formControlName="answer" required>
+						</mat-form-field>
+
+						<div class="middle">
+							<button mat-raised-button type="submit" color="accent"
+								[disabled]="!gobletForm.valid || spectator">Proveri</button>
+							<button mat-raised-button type="button" color="accent" (click)="skip()"
+								[disabled]="spectator">Preskoči</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</form>
+</mat-card>

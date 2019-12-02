@@ -1,0 +1,186 @@
+<div class="container">
+	<table>
+		<tr>
+			<td colspan="2" class="welcome">
+				<mat-card class="welcome-card mat-elevation-z6">
+					<h1 class="mat-h1">Dobrodošli, {{ supervisor?.name }}</h1>
+				</mat-card>
+			</td>
+		</tr>
+		<tr>
+			<td class="user-data">
+				<mat-card class="mat-elevation-z6">
+					<div class="header">
+						<h2 class="mat-h2">Vaše informacije</h2>
+						<img *ngIf="supervisor?.picture" mat-card-avatar src="{{ supervisor?.picture }}"
+							alt="Profilna slika">
+					</div>
+					<mat-card-content>
+						<table>
+							<tr>
+								<th>Ime:</th>
+								<th>{{ supervisor?.name }}</th>
+							</tr>
+							<tr>
+								<th>Prezime:</th>
+								<th>{{ supervisor?.surname }}</th>
+							</tr>
+							<tr>
+								<th>Pol:</th>
+								<th>{{ supervisor?.gender === 'male' ? 'Muški' : 'Ženski' }}</th>
+							</tr>
+							<tr>
+								<th>Zanimanje:</th>
+								<th>{{ supervisor?.profession ? supervisor?.profession : 'Nepoznato' }}</th>
+							</tr>
+							<tr>
+								<th>Email:</th>
+								<th>{{ supervisor?.email }}</th>
+							</tr>
+							<tr>
+								<th>Korisničko ime:</th>
+								<th>{{ supervisor?.username }}</th>
+							</tr>
+							<tr>
+								<th>JMBG:</th>
+								<th>{{ supervisor?.jmbg }}</th>
+							</tr>
+						</table>
+					</mat-card-content>
+				</mat-card>
+			</td>
+			<td rowspan="2" class="insert-form">
+				<mat-card *ngIf="option === 1" class="mat-elevation-z6">
+					<h2 class="mat-h2">Unos anagrama</h2>
+					<form [formGroup]="anagramForm" (ngSubmit)="saveAnagram()">
+
+						<mat-form-field appearance="standard">
+							<mat-label>Unesite anagram</mat-label>
+							<input matInput type="text" formControlName="riddle" [disabled]="">
+						</mat-form-field>
+
+						<p>ili...</p>
+
+						<div class="middle">
+							<input #input type="file" (change)="rebusUpload($event)" name="rebus" accept="image/*"
+								hidden>
+							<mat-form-field>
+								<input matInput type="text" value="{{ fileName }}" disabled>
+								<mat-hint>Izaberite rebus</mat-hint>
+							</mat-form-field>
+							<button mat-icon-button type="button" (click)="input.click()">
+								<mat-icon>attach_file</mat-icon>
+							</button>
+						</div>
+
+						<mat-form-field appearance="standard">
+							<mat-label>Unesite rešenje</mat-label>
+							<input matInput type="text" formControlName="solution" required>
+						</mat-form-field>
+
+						<div class="middle">
+							<button mat-raised-button type="submit" color="accent"
+								[disabled]="!anagramForm.valid">Sačuvaj</button>
+						</div>
+
+					</form>
+				</mat-card>
+
+				<mat-card *ngIf="option === 2" class="mat-elevation-z6">
+					<h2 class="mat-h2">Unos reči za igru vešala</h2>
+					<form [formGroup]="hangmanForm" (ngSubmit)="saveHangman()">
+
+						<mat-form-field>
+							<mat-label>Unesite reč</mat-label>
+							<input matInput type="text" formControlName="word" required>
+						</mat-form-field>
+
+						<div class="middle">
+							<button mat-raised-button type="submit" color="accent"
+								[disabled]="!hangmanForm.valid">Sačuvaj</button>
+						</div>
+
+					</form>
+				</mat-card>
+
+				<mat-card *ngIf="option === 3" class="mat-elevation-z6">
+					<h2 class="mat-h2">Provera unetih pojmova</h2>
+					<form [formGroup]="geoForm">
+						<mat-accordion *ngIf="evaluations.length > 0; else noEvals" formArrayName="evals">
+							<mat-expansion-panel *ngFor="let eval of evals.controls; let i = index" [formArrayName]="i">
+								<mat-expansion-panel-header>
+									<mat-panel-title>
+										Broj pojmova: {{ evaluations[i].terms.length }}
+									</mat-panel-title>
+								</mat-expansion-panel-header>
+
+								<div *ngFor="let term of evals.at(i).controls; let j = index">
+									<mat-checkbox color="warn" [formControlName]="j">
+										{{ categories[evaluations[i].terms[j].category] }}: {{ evaluations[i].terms[j].term }}
+									</mat-checkbox>
+								</div>
+
+								<mat-action-row>
+									<button mat-button color="primary" (click)="evaluate(i)">Potvrdi</button>
+								</mat-action-row>
+							</mat-expansion-panel>
+						</mat-accordion>
+
+						<ng-template #noEvals>
+							<p>Trenutno nema pojmova za proveru.</p>
+							<button mat-button color="warn" (click)="loadEvaluations()">Osveži</button>
+						</ng-template>
+					</form>
+				</mat-card>
+
+				<mat-card *ngIf="option === 4" class="mat-elevation-z6">
+					<h2 class="mat-h2">Unos pehara</h2>
+					<form [formGroup]="gobletForm" (ngSubmit)="saveGoblet()">
+
+						<div formArrayName="rows" class="goblet-form">
+							<div *ngFor="let row of rows.controls; let i = index" [formGroupName]="i">
+								<mat-form-field>
+									<mat-label>Pitanje #{{ i + 1 }}</mat-label>
+									<input matInput type="text" formControlName="question" required>
+								</mat-form-field>
+
+								<mat-form-field>
+									<mat-label>Odgovor #{{ i + 1 }}</mat-label>
+									<input matInput type="text" formControlName="answer" required>
+								</mat-form-field>
+							</div>
+						</div>
+
+						<div class="middle">
+							<button mat-raised-button type="submit" color="accent"
+								[disabled]="!gobletForm.valid">Sačuvaj</button>
+						</div>
+
+					</form>
+				</mat-card>
+			</td>
+		</tr>
+		<tr>
+			<td class="options">
+				<mat-card class="mat-elevation-z6">
+					<h2 class="mat-h2">Izaberite neku od opcija</h2>
+					<button mat-raised-button color="warn" (click)="option = 1">
+						Unos anagrama
+					</button>
+
+					<button mat-raised-button color="primary" (click)="option = 2">
+						Unos reči za igru vešala
+					</button>
+
+					<button mat-raised-button (click)="option = 3">
+						Provera unetih pojmova
+					</button>
+
+					<button mat-raised-button color="accent" (click)="option = 4">
+						Unos pehara
+					</button>
+				</mat-card>
+			</td>
+		</tr>
+	</table>
+</div>

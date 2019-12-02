@@ -1,0 +1,27 @@
+.container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+mat-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-width: 40%;
+}
+
+table {
+	min-width: 100%;
+}
+
+.table-row:hover {
+	background-color: #cfd8dc;
+}
+
+.back {
+	margin-top: 5em;
+	display: flex;
+	justify-content: center; 
+}

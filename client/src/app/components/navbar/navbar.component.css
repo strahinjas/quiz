@@ -1,0 +1,19 @@
+.logo {
+	font-family: "Righteous", cursive;
+	font-size: 26px;
+}
+
+.fill-space {
+	flex: auto;
+}
+
+img {
+	size: inherit;
+	max-height: 50px;
+	padding-right: 1%;
+}
+
+.navbar a, a:visited {
+	color: white;
+	text-decoration: none;
+}

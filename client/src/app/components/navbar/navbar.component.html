@@ -1,0 +1,15 @@
+<mat-toolbar color="primary" class="mat-elevation-z6">
+	<img src="../../../assets/images/etf_logo.gif" alt="ETF Logo">
+	<span class="logo">Kviskoteka</span>
+	
+	<span class="fill-space"></span>
+
+	<span *ngIf="userService.loggedOut()"><a mat-button routerLink="/login">Prijava</a></span>
+	<span *ngIf="userService.loggedOut()"><a mat-button routerLink="/register">Registracija</a></span>
+
+	<span *ngIf="userService.loggedIn()"><a mat-button routerLink="/ranks">Tabele</a></span>
+
+	<span><a mat-button routerLink="/password-change/voluntarily">Promena lozinke</a></span>
+	
+	<span *ngIf="userService.loggedIn()"><a mat-button (click)="logout()">Odjava</a></span>
+</mat-toolbar>

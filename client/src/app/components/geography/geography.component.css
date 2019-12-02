@@ -1,0 +1,36 @@
+mat-card {
+	margin: 5% auto;
+	width: 50%;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+}
+
+.letter {
+	height: 2.5em;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.letter span {
+	padding: 0.6em;
+}
+
+.letter button {
+	margin-left: 2em;
+}
+
+.message {
+	color: #b71c1c;
+	font-weight: bold;
+	display: flex;
+	justify-content: center;
+}
+
+.middle {
+	display: flex;
+	justify-content: space-evenly;
+}

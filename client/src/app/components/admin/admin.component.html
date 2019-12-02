@@ -1,0 +1,124 @@
+<div class="container">
+	<table>
+		<tr>
+			<td colspan="2" class="welcome">
+				<mat-card class="welcome-card mat-elevation-z6">
+					<h1 class="mat-h1">Dobrodošli, {{ admin?.name }}</h1>
+				</mat-card>
+			</td>
+		</tr>
+		<tr>
+			<td class="user-data">
+				<mat-card class="mat-elevation-z6">
+					<div class="header">
+						<h2 class="mat-h2">Vaše informacije</h2>
+						<img *ngIf="admin?.picture" mat-card-avatar src="{{ admin?.picture }}" alt="Profilna slika">
+					</div>
+					<mat-card-content>
+						<table>
+							<tr>
+								<th>Ime:</th>
+								<th>{{ admin?.name }}</th>
+							</tr>
+							<tr>
+								<th>Prezime:</th>
+								<th>{{ admin?.surname }}</th>
+							</tr>
+							<tr>
+								<th>Pol:</th>
+								<th>{{ admin?.gender === 'male' ? 'Muški' : 'Ženski' }}</th>
+							</tr>
+							<tr>
+								<th>Zanimanje:</th>
+								<th>{{ admin?.profession ? admin?.profession : 'Nepoznato' }}</th>
+							</tr>
+							<tr>
+								<th>Email:</th>
+								<th>{{ admin?.email }}</th>
+							</tr>
+							<tr>
+								<th>Korisničko ime:</th>
+								<th>{{ admin?.username }}</th>
+							</tr>
+							<tr>
+								<th>JMBG:</th>
+								<th>{{ admin?.jmbg }}</th>
+							</tr>
+						</table>
+					</mat-card-content>
+				</mat-card>
+			</td>
+			<td rowspan="2" class="day-game">
+				<mat-card class="mat-elevation-z6">
+					<h2 class="mat-h2">Formiranje igre dana</h2>
+					<form [formGroup]="gameForm" (ngSubmit)="saveGame()">
+	
+						<mat-form-field appearance="standard">
+							<mat-label>Datum</mat-label>
+							<input matInput formControlName="date" [matDatepicker]="picker"
+								[matDatepickerFilter]="dateFilter" [errorStateMatcher]="matcher" required>
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-datepicker #picker color="warn" disabled="false"></mat-datepicker>
+							<mat-error>{{ errorMessage('date') }}</mat-error>
+						</mat-form-field>
+	
+						<mat-form-field appearance="standard">
+							<mat-label>Anagram</mat-label>
+							<mat-select formControlName="anagram" [errorStateMatcher]="matcher" required>
+								<mat-option *ngFor="let anagram of anagrams" [value]="anagram._id">
+									{{ anagram.isRebus ? 'rebus' : anagram.riddle }} => {{ anagram.solution }}
+								</mat-option>
+							</mat-select>
+							<mat-error>{{ errorMessage('anagram') }}</mat-error>
+						</mat-form-field>
+	
+						<mat-form-field appearance="standard">
+							<mat-label>Pehar</mat-label>
+							<mat-select formControlName="goblet" [errorStateMatcher]="matcher" required>
+								<mat-option *ngFor="let goblet of goblets" [value]="goblet._id">
+									{{ goblet.rows[0].answer }} => {{ goblet.rows[12].answer }}
+								</mat-option>
+							</mat-select>
+							<mat-error>{{ errorMessage('anagram') }}</mat-error>
+						</mat-form-field>
+	
+						<button mat-raised-button type="submit" color="accent" [disabled]="!gameForm.valid">Sačuvaj</button>
+	
+					</form>
+				</mat-card>
+			</td>
+		</tr>
+		<tr>
+			<td class="register-requests">
+				<mat-card class="mat-elevation-z6">
+					<h2 class="mat-h2">Zahtevi za registracijom</h2>
+					<mat-accordion *ngIf="requests.length > 0; else noRequests">
+						<mat-expansion-panel *ngFor="let request of requests">
+							<mat-expansion-panel-header>
+								<mat-panel-title>
+									{{ request.name }} {{ request.surname }}
+								</mat-panel-title>
+							</mat-expansion-panel-header>
+	
+							<p>Tip: {{ request.role === 'admin' ? 'Administrator' : request.role === 'player' ? 'Takmičar' : 'Supervizor' }}</p>
+							<p>Email: {{ request.email }}</p>
+							<p>Korisničko ime: {{ request.username }}</p>
+							<p>Zanimanje: {{ request.profession ? request.profession : 'Nepoznato' }}</p>
+							<p>JMBG: {{ request.jmbg }}</p>
+	
+							<mat-action-row>
+								<button mat-button color="warn" (click)="accept(request)">Prihvati</button>
+								<button mat-button color="primary" (click)="reject(request)">Odbij</button>
+							</mat-action-row>
+						</mat-expansion-panel>
+					</mat-accordion>
+	
+					<ng-template #noRequests>
+						<p>Trenutno nema novih zahteva.</p>
+						<button mat-button color="warn" (click)="loadRequests()">Osveži</button>
+					</ng-template>
+				</mat-card>
+			</td>
+		</tr>
+	</table>
+</div>

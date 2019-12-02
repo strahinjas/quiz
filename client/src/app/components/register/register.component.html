@@ -1,0 +1,103 @@
+<mat-card class="mat-elevation-z6">
+	<mat-card-header>
+		<mat-card-title>Registracija</mat-card-title>
+	</mat-card-header>
+
+	<form class="container" [formGroup]="registerForm" (ngSubmit)="register()">
+		<mat-form-field appearance="outline">
+			<mat-label>Ime</mat-label>
+			<input matInput type="text" formControlName="name" [errorStateMatcher]="matcher" required>
+			<mat-error>{{ errorMessage('name') }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Prezime</mat-label>
+			<input matInput type="text" formControlName="surname" [errorStateMatcher]="matcher" required>
+			<mat-error>{{ errorMessage('surname') }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Adresa elektronske pošte</mat-label>
+			<input matInput type="email" formControlName="email" [errorStateMatcher]="matcher" required>
+			<mat-error>{{ errorMessage('email') }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Zanimanje</mat-label>
+			<input matInput type="text" formControlName="profession">
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Tip korisnika</mat-label>
+			<mat-select formControlName="role" [errorStateMatcher]="matcher" required>
+				<mat-option value="admin">Administrator</mat-option>
+				<mat-option value="supervisor">Supervizor</mat-option>
+				<mat-option value="player">Takmičar</mat-option>
+			</mat-select>
+			<mat-error>{{ errorMessage('role') }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Korisničko ime</mat-label>
+			<input matInput type="text" formControlName="username" [errorStateMatcher]="matcher" required>
+			<mat-error>{{ errorMessage('username') }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Lozinka</mat-label>
+			<input matInput [type]="hide ? 'password' : 'text'" formControlName="password" [errorStateMatcher]="matcher"
+				required>
+			<button mat-icon-button type="button" matSuffix (click)="hide = !hide">
+				<mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+			</button>
+			<mat-error>{{ errorMessage('password') }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Potvrda lozinke</mat-label>
+			<input matInput type="password" formControlName="confirm" [errorStateMatcher]="matcher" required>
+			<mat-error>{{ errorMessage('confirm') }}</mat-error>
+		</mat-form-field>
+
+		<div class="middle">
+			<label for="gender">Pol:</label>
+			<mat-radio-group id="gender" name="gender" formControlName="gender">
+				<mat-radio-button value="male" checked>Muški</mat-radio-button>
+				<mat-radio-button value="female">Ženski</mat-radio-button>
+			</mat-radio-group>
+		</div>
+
+		<mat-form-field appearance="outline">
+			<mat-label>JMBG</mat-label>
+			<input matInput type="text" formControlName="jmbg" maxlength="13" [errorStateMatcher]="matcher" required>
+			<mat-error>{{ errorMessage('jmbg') }}</mat-error>
+		</mat-form-field>
+
+		<div class="middle">
+			<input #input type="file" (change)="pictureUpload($event)" name="picture" accept="image/*" hidden>
+			<mat-form-field>
+				<input matInput type="text" value="{{ fileName }}" disabled>
+				<mat-hint>Izaberite profilnu sliku</mat-hint>
+			</mat-form-field>
+			<button mat-icon-button type="button" (click)="input.click()">
+				<mat-icon>add_a_photo</mat-icon>
+			</button>
+		</div>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Sigurnosno pitanje</mat-label>
+			<input matInput type="text" formControlName="question" [errorStateMatcher]="matcher" required>
+			<mat-error>{{ errorMessage('question') }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Odgovor</mat-label>
+			<input matInput type="text" formControlName="answer" [errorStateMatcher]="matcher" required>
+			<mat-error>{{ errorMessage('answer') }}</mat-error>
+		</mat-form-field>
+
+		<div class="buttons">
+			<button mat-raised-button color="accent" type="submit" [disabled]="!registerForm.valid">Potvrdi</button>
+		</div>
+	</form>
+</mat-card>

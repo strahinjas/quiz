@@ -1,0 +1,85 @@
+<mat-card class="my-number mat-elevation-z6">
+	<mat-card-header>
+		<mat-card-title>Moj broj</mat-card-title>
+	</mat-card-header>
+
+	<form class="container" [formGroup]="numberForm" (ngSubmit)="checkResult()">
+		<table>
+			<tr>
+				<td colspan="3">
+					<p>Preostalo vremena: <strong>{{ timeLeft }}s</strong></p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<mat-form-field appearance="outline">
+						<input class="target" matInput value="{{ target }}" disabled>
+					</mat-form-field>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button type="button" color="primary" mat-raised-button
+						(click)="numberUsed[0] = true; append(numbers[0].toString())"
+						[disabled]="locked || numberUsed[0] || operation">{{ numbers[0] }}</button>
+					<button type="button" color="primary" mat-raised-button
+						(click)="numberUsed[1] = true; append(numbers[1].toString())"
+						[disabled]="locked || numberUsed[1] || operation">{{ numbers[1] }}</button>
+					<button type="button" color="primary" mat-raised-button
+						(click)="numberUsed[2] = true; append(numbers[2].toString())"
+						[disabled]="locked || numberUsed[2] || operation">{{ numbers[2] }}</button>
+					<button type="button" color="primary" mat-raised-button
+						(click)="numberUsed[3] = true; append(numbers[3].toString())"
+						[disabled]="locked || numberUsed[3] || operation">{{ numbers[3] }}</button>
+				</td>
+				<td>
+					<button type="button" color="primary" mat-raised-button
+						(click)="numberUsed[4] = true; append(numbers[4].toString())"
+						[disabled]="locked || numberUsed[4] || operation">{{ numbers[4] }}</button>
+				</td>
+				<td>
+					<button type="button" color="primary" mat-raised-button
+						(click)="numberUsed[5] = true; append(numbers[5].toString())"
+						[disabled]="locked || numberUsed[5] || operation">{{ numbers[5] }}</button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<button type="button" color="accent" mat-raised-button (click)="append('+')"
+						[disabled]="locked">+</button>
+					<button type="button" color="accent" mat-raised-button (click)="append('-')"
+						[disabled]="locked">-</button>
+					<button type="button" color="accent" mat-raised-button (click)="append('*')"
+						[disabled]="locked">*</button>
+					<button type="button" color="accent" mat-raised-button (click)="append('/')"
+						[disabled]="locked">/</button>
+					<button type="button" color="accent" mat-raised-button (click)="append('(')"
+						[disabled]="locked">(</button>
+					<button type="button" color="accent" mat-raised-button (click)="append(')')"
+						[disabled]="locked">)</button>
+				</td>
+			</tr>
+			<tr *ngIf="locked">
+				<td colspan="3">
+					<button mat-raised-button type="button" color="primary" (click)="stopLoop()" [disabled]="!myTurn">STOP</button>
+				</td>
+			</tr>
+			<tr *ngIf="!locked">
+				<td class="result" colspan="3">
+					<mat-form-field appearance="outline">
+						<input matInput formControlName="expression">
+						<button mat-icon-button type="button" matSuffix (click)="backspace()">
+							<mat-icon>backspace</mat-icon>
+						</button>
+					</mat-form-field>
+					<span>= {{ calculate(form.expression.value) }}</span>
+				</td>
+			</tr>
+			<tr *ngIf="!locked">
+				<td colspan="3">
+					<button mat-raised-button color="warn" type="submit">Potvrdi</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+</mat-card>

@@ -1,0 +1,32 @@
+<mat-card class="mat-elevation-z6">
+	<mat-card-header>
+		<mat-card-title>Igra vešala</mat-card-title>
+	</mat-card-header>
+
+	<div class="container">
+		<table>
+			<tr>
+				<td class="hangman" rowspan="2">
+					<img src="{{ imageURL }}" alt="Vešala">
+				</td>
+				<td class="word">
+					<span *ngFor="let letter of word">
+						<input type="text" class="square-input mat-elevation-z3" [class.blue]="letter.blue"
+							[class.red]="letter.red" [class.missed]="letter.missed"
+							value="{{ letter.blue || letter.red || letter.missed ? letter.letter : '_' }}"
+							disabled>
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td class="alphabet">
+					<p *ngIf="spectator" class="message">PROTIVNIK JE NA POTEZU</p>
+					
+					<button mat-flat-button type="button" color="accent" class="letter"
+						*ngFor="let letter of alphabet; let i = index" [disabled]="chosen[i] || spectator"
+						(click)="check(letter)">{{ letter }}</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+</mat-card>

@@ -1,0 +1,28 @@
+<mat-card class="anagram mat-elevation-z6">
+	<mat-card-header>
+		<mat-card-title>Anagram</mat-card-title>
+	</mat-card-header>
+
+	<form class="container" [formGroup]="anagramForm" (ngSubmit)="checkAnswer()">
+		<div class="middle">
+			<p>Preostalo vremena: <strong>{{ timeLeft }}s</strong></p>
+		</div>
+
+		<mat-form-field *ngIf="!anagrams[round]?.isRebus; else rebus" appearance="outline">
+			<input matInput type="text" value="{{ anagrams[round]?.riddle }}" disabled>
+		</mat-form-field>
+
+		<ng-template #rebus>
+			<img src="{{ anagrams[round]?.rebus }}" alt="Rebus">
+		</ng-template>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Rešenje</mat-label>
+			<input matInput type="text" formControlName="answer">
+		</mat-form-field>
+
+		<div class="middle">
+			<button mat-raised-button type="submit" color="accent" [disabled]="!anagramForm.valid">Potvrdi</button>
+		</div>
+	</form>
+</mat-card>
